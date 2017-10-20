@@ -1,5 +1,5 @@
 FROM openjdk:8u121-alpine
-MAINTAINER Atlassian Bitbucket Server Team
+MAINTAINER stpork from Mordor team
 
 ENV RUN_USER            daemon
 ENV RUN_GROUP           daemon
