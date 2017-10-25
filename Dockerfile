@@ -1,4 +1,4 @@
-FFROM openjdk:8u121-alpine
+FROM openjdk:8u121-alpine
 MAINTAINER stpork from Mordor team
 
 ENV RUN_USER            daemon
