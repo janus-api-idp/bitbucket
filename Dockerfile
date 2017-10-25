@@ -1,4 +1,4 @@
-FROM openjdk:8u121-alpine
+FFROM openjdk:8u121-alpine
 MAINTAINER stpork from Mordor team
 
 ENV RUN_USER            daemon
@@ -26,7 +26,7 @@ RUN apk update -qq \
 
 COPY entrypoint.sh              /entrypoint.sh
 
-ARG BITBUCKET_VERSION=5.4.1
+ARG BITBUCKET_VERSION=5.5.0
 ARG DOWNLOAD_URL=https://downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz
 COPY . /tmp
 
