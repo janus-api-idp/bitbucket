@@ -9,6 +9,7 @@ ENV BITBUCKET_HOME          /var/atlassian/application-data/bitbucket
 ENV BITBUCKET_INSTALL_DIR   /opt/atlassian/bitbucket
 
 VOLUME ["${BITBUCKET_HOME}"]
+VOLUME ["${BITBUCKET_HOME}/shared"]
 
 # Expose HTTP and SSH ports
 EXPOSE 7990
