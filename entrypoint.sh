@@ -23,8 +23,9 @@ CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorScheme=${CATALINA_CONNECTOR_S
 CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorSecure=${CATALINA_CONNECTOR_SECURE}"
 
 JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS}"
+export JVM_SUPPORT_RECOMMENDED_ARGS="-Dcluster.node.name=$HOSTNAME"
 
-ARGS="-Dcluster.node.name=$HOSTNAME $@"
+ARGS="$@"
 
 # Start Bitbucket without Elasticsearch
 if [ "${ELASTICSEARCH_ENABLED}" == "false" ] || [ "${APPLICATION_MODE}" == "mirror" ]; then
