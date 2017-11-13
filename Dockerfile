@@ -1,36 +1,32 @@
 FROM openjdk:8u121-alpine
+
 MAINTAINER stpork from Mordor team
 
-ENV RUN_USER            daemon
-ENV RUN_GROUP           daemon
+ENV RUN_USER=daemon \
+RUN_GROUP=daemon \
+BITBUCKET_HOME=/var/atlassian/application-data/bitbucket \
+BITBUCKET_INSTALL=/opt/atlassian/bitbucket
 
-# https://confluence.atlassian.com/display/BitbucketServer/Bitbucket+Server+home+directory
-ENV BITBUCKET_HOME          /var/atlassian/application-data/bitbucket
-ENV BITBUCKET_INSTALL_DIR   /opt/atlassian/bitbucket
+RUN apk update -qq \
+&& update-ca-certificates \
+&& apk add ca-certificates wget curl git openssh bash procps openssl perl ttf-dejavu tini \
+&& rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
+&& VER=5.5.0 \
+&& URL=https://downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VER}.tar.gz \
+&& mkdir -p ${BITBUCKET_INSTALL} \
+&& curl -fsSL ${URL} | tar -xz --strip-components=1 -C "$BITBUCKET_INSTALL" \
+&& chown -R ${RUN_USER}:${RUN_GROUP} ${BITBUCKET_INSTALL}/ \
+&& if [ -f ${BITBUCKET_HOME}/shared/public.crt ]; then $JAVA_HOME/bin/keytool -storepass changeit -import -alias ocp -keystore $JAVA_HOME/jre/lib/security/cacerts -file ${BITBUCKET_HOME}/shared/public.crt; fi
+
+COPY entrypoint.sh /entrypoint.sh
+
+EXPOSE 7990
+EXPOSE 7999
 
 VOLUME ["${BITBUCKET_HOME}"]
 VOLUME ["${BITBUCKET_HOME}/shared"]
-
-# Expose HTTP and SSH ports
-EXPOSE 7990
-EXPOSE 7999
 
 WORKDIR $BITBUCKET_HOME
 
 CMD ["/entrypoint.sh", "-fg"]
 ENTRYPOINT ["/sbin/tini", "--"]
-
-RUN apk update -qq \
-    && update-ca-certificates \
-    && apk add ca-certificates wget curl git openssh bash procps openssl perl ttf-dejavu tini \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
-
-COPY entrypoint.sh              /entrypoint.sh
-
-ARG BITBUCKET_VERSION=5.5.0
-ARG DOWNLOAD_URL=https://downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz
-COPY . /tmp
-
-RUN mkdir -p                             ${BITBUCKET_INSTALL_DIR} \
-    && curl -L --silent                  ${DOWNLOAD_URL} | tar -xz --strip-components=1 -C "$BITBUCKET_INSTALL_DIR" \
-    && chown -R ${RUN_USER}:${RUN_GROUP} ${BITBUCKET_INSTALL_DIR}/
