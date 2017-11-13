@@ -15,8 +15,7 @@ RUN apk update -qq \
 && URL=https://downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VER}.tar.gz \
 && mkdir -p ${BITBUCKET_INSTALL} \
 && curl -fsSL ${URL} | tar -xz --strip-components=1 -C "$BITBUCKET_INSTALL" \
-&& chown -R ${RUN_USER}:${RUN_GROUP} ${BITBUCKET_INSTALL}/ \
-&& if [ -f ${BITBUCKET_HOME}/shared/public.crt ]; then $JAVA_HOME/bin/keytool -storepass changeit -import -alias ocp -keystore $JAVA_HOME/jre/lib/security/cacerts -file ${BITBUCKET_HOME}/shared/public.crt; fi
+&& chown -R ${RUN_USER}:${RUN_GROUP} ${BITBUCKET_INSTALL}/
 
 COPY entrypoint.sh /entrypoint.sh
 

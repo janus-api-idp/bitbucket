@@ -22,6 +22,10 @@ CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorProxyPort=${CATALINA_CONNECTO
 CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorScheme=${CATALINA_CONNECTOR_SCHEME}"
 CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorSecure=${CATALINA_CONNECTOR_SECURE}"
 
+if [ -f ${BITBUCKET_HOME}/shared/cacerts ]; then 
+    JAVA_OPTS="-Djavax.net.ssl.trustStore=${BITBUCKET_HOME}/shared/cacerts"
+fi
+
 JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS}"
 export JVM_SUPPORT_RECOMMENDED_ARGS="-Dcluster.node.name=$HOSTNAME"
 
