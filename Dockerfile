@@ -1,20 +1,22 @@
-FROM openjdk:8u121-alpine
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER stpork from Mordor team
 
 ENV RUN_USER=daemon \
 RUN_GROUP=daemon \
+BITBUCKET_VERSION=5.5.1 \
 BITBUCKET_HOME=/var/atlassian/application-data/bitbucket \
 BITBUCKET_INSTALL=/opt/atlassian/bitbucket
 
-RUN apk update -qq \
+RUN set -x \
+&& apk update -qq \
 && update-ca-certificates \
-&& apk add ca-certificates wget curl git openssh bash procps openssl perl ttf-dejavu tini \
+&& apk add --no-cache ca-certificates curl git openssh bash procps openssl perl ttf-dejavu tini nano \
 && rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
-&& VER=5.5.1 \
-&& URL=https://downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VER}.tar.gz \
 && mkdir -p ${BITBUCKET_INSTALL} \
-&& curl -fsSL ${URL} | tar -xz --strip-components=1 -C "$BITBUCKET_INSTALL" \
+&& curl -fsSL \
+"https://downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz" \
+| tar -xz --strip-components=1 -C "$BITBUCKET_INSTALL" \
 && chown -R ${RUN_USER}:${RUN_GROUP} ${BITBUCKET_INSTALL}/
 
 COPY entrypoint.sh /entrypoint.sh
