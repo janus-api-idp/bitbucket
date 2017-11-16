@@ -11,7 +11,7 @@ RUN apk update -qq \
 && update-ca-certificates \
 && apk add ca-certificates wget curl git openssh bash procps openssl perl ttf-dejavu tini \
 && rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
-&& VER=5.5.0 \
+&& VER=5.5.1 \
 && URL=https://downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${VER}.tar.gz \
 && mkdir -p ${BITBUCKET_INSTALL} \
 && curl -fsSL ${URL} | tar -xz --strip-components=1 -C "$BITBUCKET_INSTALL" \
