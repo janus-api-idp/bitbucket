@@ -6,7 +6,10 @@ ENV BITBUCKET_VERSION=5.6.2 \
 BITBUCKET_HOME=/var/atlassian/application-data/bitbucket \
 BITBUCKET_INSTALL=/opt/atlassian/bitbucket \
 RUN_USER=daemon \
-RUN_GROUP=daemon 
+RUN_GROUP=daemon \
+PATH=$PATH:/usr/libexec/git-core
+
+ENV HOME=$BITBUCKET_HOME
 
 RUN set -x \
 && apk update -qq \
