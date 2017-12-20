@@ -6,15 +6,14 @@ ENV BITBUCKET_VERSION=5.6.2 \
 BITBUCKET_HOME=/var/atlassian/application-data/bitbucket \
 BITBUCKET_INSTALL=/opt/atlassian/bitbucket \
 RUN_USER=daemon \
-RUN_GROUP=daemon \
-PATH=$PATH:/usr/libexec/git-core
+RUN_GROUP=daemon 
 
 ENV HOME=$BITBUCKET_HOME
 
 RUN set -x \
 && apk update -qq \
 && update-ca-certificates \
-&& apk add --no-cache ca-certificates curl git openssh bash procps openssl perl ttf-dejavu tini nano \
+&& apk add --no-cache ca-certificates curl git git-daemon openssh bash procps openssl perl ttf-dejavu tini nano \
 && rm -rf /var/cache/apk/* /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
 && mkdir -p ${BITBUCKET_INSTALL} \
 && curl -fsSL \
