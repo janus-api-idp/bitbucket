@@ -2,7 +2,7 @@ FROM openjdk:8-jdk-alpine
 
 MAINTAINER stpork from Mordor team
 
-ENV BITBUCKET_VERSION=5.6.2 \
+ENV BITBUCKET_VERSION=5.7.0 \
 BITBUCKET_HOME=/var/atlassian/application-data/bitbucket \
 BITBUCKET_INSTALL=/opt/atlassian/bitbucket \
 RUN_USER=daemon \
